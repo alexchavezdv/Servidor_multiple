@@ -24,10 +24,10 @@ public class ServerThread extends Thread {
     //atributo nombre de cliente
     
     public ServerThread(Socket socket, 
-            ArrayList<ServerThread> threads) {
+            ArrayList<ServerThread> threads, String nombre) {
         this.socket = socket;
         this.threadList = threads;
-        this.nombreUsuario = "";
+        this.nombreUsuario = nombre;
         this.superusuario = false;
     }
     @Override
@@ -37,7 +37,7 @@ public class ServerThread extends Thread {
             new InputStreamReader(socket.getInputStream()));
             output = 
              new PrintWriter(socket.getOutputStream(),true);
-            String nombre_thread = input.readLine();
+            String nombre_thread = nombreUsuario;
             this.currentThread().setName(nombre_thread);
             System.out.println("Nombre del hilo "+ Thread.currentThread().getName());
             while (true) {
@@ -57,12 +57,13 @@ public class ServerThread extends Thread {
                            // if (splitted[2].equals())
                         }
                     
+                    
                 } else {
                     String message = ( "("+Thread.currentThread().getName()+")"+" mensaje: " );
                     if (outputString.equals("salir")) {
                         break;
                     }
-                    printToAllClients(nombre_thread + " dice:"+
+                    printToAllClients(
                             message + outputString);
                     System.out.println("Server recibió de:"+
                             nombre_thread + " :>" +
